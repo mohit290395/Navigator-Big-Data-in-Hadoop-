@@ -1,0 +1,14 @@
+ select usercity,city,lat1,long1,direction(lat2,long2,lat1,long1) as diection, distance
+ from(
+ select usercity,city,lat1,long1,lat2,long2,d
+ from(
+       select usercity,city,lat1,long1,lat2,long2,distance(lat1,long1,lat2,long2) as d,value
+       from (
+              select a.city as usercity,part(a.longitude,0) as p,part(a.longitude,-1) as pleft,part(a.longitude,1) as pright , a.latitude as lat2 , a.longitude as long2 , b.city as city , b.latitude as lat1, b.longitude as long1 , b.value as value 
+              from last b , user a
+            )f
+       where value = p or value=pleft or value=pright
+    ) s
+ 
+ where d <= 25
+)th
